@@ -60,26 +60,4 @@ class Database {
     }
 }
 
-/**
- * DbRunner class to run the database setup
- * Instantiates the Database class and calls the setup method to fully initialize the database
- */
-class DbRunner {
-    constructor() {
-        this.db = new Database();
-    }
-
-    async run() {
-        await this.db.setup();
-    }
-}
-
-let newDbRunner = new DbRunner();
-newDbRunner.run().then(() => {
-    console.log("Database setup complete.");
-}).catch((error) => {
-    console.error("Database setup failed:", error);
-});
-
-export { Database, DbRunner };
-
+export { Database };
