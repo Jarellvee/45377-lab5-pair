@@ -23,31 +23,34 @@ class Database {
             console.log("Connecting to MySQL using:", {
                 host: process.env.MYSQLHOST,
                 user: process.env.MYSQLUSER,
-                database: process.env.MYSQLDATABASE,
                 port: process.env.MYSQLPORT
             });
+
             this.connection = await mysql.createConnection({
                 host: process.env.MYSQLHOST || process.env.DB_HOST,
                 user: process.env.MYSQLUSER || process.env.DB_USER,
                 password: process.env.MYSQLPASSWORD || process.env.DB_PASS,
-                database: process.env.MYSQLDATABASE || process.env.DB_NAME,
                 port: process.env.MYSQLPORT || process.env.DB_PORT
             });
-            console.log("connected to MySQL server");
+
+            console.log("Connected to MySQL server");
+
+            const dbName = process.env.MYSQLDATABASE || process.env.DB_NAME;
+            await this.connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
+            await this.connection.query(`USE \`${dbName}\`;`);
+
+            await this.connection.query(`
+      CREATE TABLE IF NOT EXISTS patient (
+        patientid INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        dateOfBirth DATE NOT NULL
+      ) ENGINE=InnoDB;
+    `);
+
+            console.log("Database and patient table ready");
         }
-
-        await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.MYSQLDATABASE}`); // check for database, create if not exists, switched to using railway version
-        await this.connection.query(`USE ${process.env.MYSQLDATABASE}`);
-
-        await this.connection.query(`
-        CREATE TABLE IF NOT EXISTS patient (
-            patientid INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            dateOfBirth DATE NOT NULL
-        ) ENGINE=InnoDB;
-    `); // check for patient table, create if not exists
-        console.log("Database and patient table ready");
     }
+
 
 
     /**
