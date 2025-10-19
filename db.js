@@ -36,8 +36,8 @@ class Database {
             console.log("connected to MySQL server");
         }
 
-        await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`); // check for db, create if not exists
-        await this.connection.query(`USE ${process.env.DB_NAME}`); // use that db after making sure it exists
+        await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.MYSQLDATABASE}`); // check for database, create if not exists, switched to using railway version
+        await this.connection.query(`USE ${process.env.MYSQLDATABASE}`);
 
         await this.connection.query(`
         CREATE TABLE IF NOT EXISTS patient (
