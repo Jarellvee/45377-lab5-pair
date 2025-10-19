@@ -12,8 +12,9 @@ class Server {
     async start() {
         await this.db.setup();
         const port = process.env.PORT || 3000;
+        console.log("process.env.PORT =", process.env.PORT);
         this.server.listen(port, () => {
-            console.log(`✅ Server is running on port ${port}`);
+            console.log(`Server is running on port ${port}`);
         });
     }
 
