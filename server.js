@@ -9,12 +9,14 @@ class Server {
         this.server = http.createServer(this.requestListener.bind(this));
     }
 
-    async start(port) {
+    async start() {
         await this.db.setup();
+        const port = process.env.PORT || 3000;
         this.server.listen(port, () => {
-            console.log(MESSAGES.SUCCESS.SERVER_RUNNING.replace('${port}', port));
+            console.log(`✅ Server is running on port ${port}`);
         });
     }
+
 
     corsHeaders() {
         return {
@@ -98,13 +100,13 @@ class Server {
 class ServerRunner {
     constructor() {
         this.server = new Server();
-        this.PORT = process.env.PORT || 3000;
     }
 
     async run() {
-        await this.server.start(this.PORT);
+        await this.server.start();
     }
 }
+
 
 const serverRunner = new ServerRunner();
 serverRunner.run();
