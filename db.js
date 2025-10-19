@@ -20,6 +20,12 @@ class Database {
      * */
     async setup() {
         if (!this.connection) {
+            console.log("Connecting to MySQL using:", {
+                host: process.env.MYSQLHOST,
+                user: process.env.MYSQLUSER,
+                database: process.env.MYSQLDATABASE,
+                port: process.env.MYSQLPORT
+            });
             this.connection = await mysql.createConnection({
                 host: process.env.MYSQLHOST || process.env.DB_HOST,
                 user: process.env.MYSQLUSER || process.env.DB_USER,
