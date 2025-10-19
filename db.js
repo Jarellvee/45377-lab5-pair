@@ -55,16 +55,28 @@ class Database {
 
     /**
      *  Executes a passed sql query with params
+     * Pings the db to keep connection alive, reconnects if needed
      * @param {*} sql - The SQL query string.
      * @param {*} params - The parameters for the query.
      * @returns The result of the query.
      */
     async query(sql, params = []) {
         try {
-            const [rows] = await this.connection.execute(sql, params); // paramterized query, so safe from injection
+            if (!this.connection) {
+                await this.setup();
+            } else {
+                try {
+                    await this.connection.ping();
+                } catch {
+                    console.log("MySQL connection sleeping. Reconnecting...");
+                    this.connection = null;
+                    await this.setup();
+                }
+            }
+            const [rows] = await this.connection.execute(sql, params);
             return rows;
         } catch (error) {
-            console.error('Database query error:', error);
+            console.error("Database query error:", error);
             throw error;
         }
     }
