@@ -84,6 +84,11 @@ class Server {
     async requestListener(req, res) {
         const parsedUrl = url.parse(req.url, true);
 
+        if (parsedUrl.pathname === "/") {
+            res.writeHead(200, { "Content-Type": "text/plain" });
+            return res.end("server is alive, use the /lab5/api/v1/sql endpoint for queries.");
+        }
+
         if (!parsedUrl.pathname.endsWith('/lab5/api/v1/sql')) {
             res.writeHead(404, this.corsHeaders());
             return res.end(JSON.stringify({ ok: false, error: MESSAGES.ERRORS.INVALID_ENDPOINT }));
