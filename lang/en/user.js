@@ -6,7 +6,7 @@ const MESSAGES = {
         INVALID_ENDPOINT: "Invalid endpoint. Please use /lab5/api/v1/sql",
     },
     SUCCESS: {
-        SERVER_RUNNING: port => `Server is running on port ${port}`,
+        SERVER_RUNNING: "Server is running at ${port}",
     },
     INFO: {
         TEST_OK: "Testing, DB is running!",

@@ -12,7 +12,7 @@ class Server {
     async start(port) {
         await this.db.setup();
         this.server.listen(port, () => {
-            console.log(MESSAGES.SUCCESS.SERVER_RUNNING(port));
+            console.log(MESSAGES.SUCCESS.SERVER_RUNNING.replace('${port}', port));
         });
     }
 
