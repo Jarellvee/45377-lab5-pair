@@ -10,7 +10,7 @@ const MESSAGES = {
     },
     INFO: {
         TEST_OK: "Testing, DB is running!",
-        EMPTY: "No patient records found. DB is empty."
+        EMPTY: "No patient records found"
     }
 };
 
