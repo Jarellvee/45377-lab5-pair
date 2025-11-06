@@ -33,7 +33,7 @@ class Server {
     }
 
     async handleGet(req, res, parsedUrl) {
-        const sql = decodeURIComponent(parsedUrl.query.query || '');
+        const sql = parsedUrl.query.query;
 
         if (!sql.toLowerCase().startsWith('select')) {
             res.writeHead(400, this.corsHeaders());
