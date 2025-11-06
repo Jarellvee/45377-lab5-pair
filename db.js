@@ -78,7 +78,21 @@ class Database {
         } catch (error) {
             if (error.code === 'ER_NO_SUCH_TABLE') {
                 console.warn("Table missing — recreating via setup()...");
+
+                this.connection = null; // remove old connection
                 await this.setup();
+
+                const dbName = process.env.MYSQLDATABASE || process.env.DB_NAME;
+                await this.connection.query(`USE \`${dbName}\`;`);
+
+                await this.connection.query(`
+          CREATE TABLE IF NOT EXISTS patient (
+            patientid INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            dateOfBirth DATE NOT NULL
+          ) ENGINE=InnoDB;
+        `);
+
                 const [rows] = await this.connection.execute(sql, params);
                 return rows;
             }
