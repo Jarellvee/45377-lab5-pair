@@ -76,6 +76,13 @@ class Database {
             const [rows] = await this.connection.execute(sql, params);
             return rows;
         } catch (error) {
+            if (error.code === 'ER_NO_SUCH_TABLE') {
+                console.warn("Table missing — recreating via setup()...");
+                await this.setup();
+                const [rows] = await this.connection.execute(sql, params);
+                return rows;
+            }
+
             console.error("Database query error:", error);
             throw error;
         }
